@@ -1,0 +1,56 @@
+﻿<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+@if (ViewBag.msg != null)
+{
+    <div class="alert alert-success">@ViewBag.msg</div>
+}
+<table class="table" id="empTable">
+    <tr>
+        <th>Profile Picture</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Mobile Number</th>
+        <th>Actions</th>
+        <th>Actions</th>
+    </tr>
+    @{
+        foreach (var employees in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(employees.ProfilePicturePath))
+                    {
+                        <img src="@employees.ProfilePicturePath" width="50" height="50" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+
+                </td>
+                <td>@employees.Name</td>
+                <td>@employees.Age</td>
+                <td>@employees.Email</td>
+                <td>@employees.MobileNumber</td>
+                @*This is Original Line of code *@
+               <td>
+                    <a href="/Employee/Edit/@employees.Id" class="btn btn-primary">Edit</a>
+                </td>
+
+                 @* <td><a href="@Url.Action("Edit","Employee",new{id=@employees.Id})">Edit</a></td>*@
+
+                @* <td><a href="javascript:void(0)" onclick="editEmployeeDetails(@employees.Id)">Edit</a></td>*@
+                <td><a href="javascript:void(0)" onclick="confirmationEmployeeDelete(@employees.Id,'@employees.Name')"> Delete </a></td>
+                @*
+                <td>
+                    <a href="/Employee/Delete/@employees.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this employee?');">Delete</a>
+                </td>
+                <td>
+                    <button class="btn btn-danger delete-btn" data-id="@employees.Id">Delete</button>
+                </td>*@
+
+            </tr>
+        }
+    }
+</table>

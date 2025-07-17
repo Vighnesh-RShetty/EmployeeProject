@@ -1,0 +1,73 @@
+﻿@model List<EmpTable>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    @* <a href="/Employee/add-new" type="button" class="btn-success">Add Employees</a> *@
+   @* <a href="/Employee/add-new" class="btn btn-success">+</a> *@
+@* <a href="/Employee/add-new" class="btn btn-success rounded-circle" style="width: 40px; height: 40px; padding: 0; text-align: center; line-height: 40px;">+</a> *@
+
+@*<a href="/Employee/add-new" class="btn btn-success" style="width: 10%;">Add New</a>
+<a href="/Accounts/Logout"
+   class="btn btn-danger btn-sm"
+   style="width: auto;"
+   onclick="return confirm('Are you sure you want to logout?');">
+    Logout
+</a>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-btn");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const employeeId = this.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to Delete action
+                        window.location.href = `/Employee/Delete/${employeeId}`;
+                    }
+                });
+            });
+        });
+    });
+</script>
+--The New Code will Strart Form the New Line 42.
+*@
+
+<button class="addNew" type="button" id="btnAddNew">Add New</button>
+ <div id="empDiv">
+@await Html.PartialAsync("~/Views/Employee/_Employee.cshtml",Model)
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $("#btnAddNew").on("click",showEmpDetails);
+
+    })
+    function showEmpDetails(){
+        window.location.href="/Employee/add-new";
+    }
+    function confirmationEmployeeDelete(empId,Name){
+        if(confirm(`Are you sure want to delete ${Name}?`)){
+            var url=`/Employee/Delete?id=${empId}`;
+            $.post(url,null,function(partialViewHtml){
+                $("#empTable").html(partialViewHtml);
+            });
+        }
+    }
+    // function editEmployeeDetails(empId){
+    //         var url=`/Employee/Edit?id=${empId}`;
+    //         $.post(url,null,function(rewsp){
+    //         $.post(url,null,function(partialViewHtml){
+    //           $("#empTable").html(partialViewHtml
+    //         });
+       // }
+        
+</script>
