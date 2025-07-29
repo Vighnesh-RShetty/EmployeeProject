@@ -4,42 +4,17 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using AspNetCoreGeneratedDocument;
 using EmployeeProject.BusinessLogic;
+using AutoMapper;
 
 namespace EmployeeProject.Controllers
 {
     public class AccountsController : Controller
     {
-        //private readonly DataContext _db;
-        private readonly EmployeeManagement empLogic;
+        private readonly CompanyManagement _companyLogic;
 
-        public AccountsController()
+        public AccountsController(IMapper mapper)
         {
-            empLogic=new EmployeeManagement();
-        }
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Login(LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            //var emp = _db.EmpTables.FirstOrDefault(e => e.Email == model.Email && e.MobileNumber == model.MobileNumber);
-            var emp = empLogic.IsValidUser(model);
-            if (emp != null)
-            {
-                    int Id = emp.Id;
-                //HttpContext.Session.SetInt32("SessionId", Id);
-
-                HttpContext.Session.SetString("email", emp.Email);
-                HttpContext.Session.SetString("name", emp.Name);
-                return RedirectToAction("Index", "Employee");
-            }
-
-            ViewBag.Error = "Invalid login credentials";
-            return View(model);
+            _companyLogic = new CompanyManagement(mapper);
         }
         public IActionResult Logout()
         {

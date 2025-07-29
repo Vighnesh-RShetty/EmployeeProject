@@ -1,0 +1,115 @@
+﻿@model EmployeeProject.Data.CompanyModel
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/custom-validation.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" rel="stylesheet" />
+<script src="~/js/validation.js"></script>
+
+
+<div class="card shadow p-4">
+    <h2 class="text-center mb-4">Company Registration</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+    @using (Html.BeginForm("SaveCompany", "Company", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Company Name:</label>
+                <input type="text" name="CompanyName" class="form-control" />
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Sector:</label>
+                @Html.DropDownListFor(m => m.SectorId, new SelectList(Model.CompanySectors, "Value", "Text"), "-- Select Sector --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Email:</label>
+                <input type="email" name="Email" class="form-control" />
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Contact Number:</label>
+                <input type="tel" name="ContactNumber" class="form-control" id="phone" />
+            </div>
+        </div>
+
+        <input type="hidden" name="CountryCode" id="countryCode" />
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Password:</label>
+                <div class="input-group mb-2">
+                    <input type="password" name="Password" id="password" class="form-control" />
+                    <div class="input-group-append">
+                        <span class="input-group-text" onclick="togglePassword('password', this)">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Confirm Password:</label>
+                <div class="input-group mb-2">
+                    <input type="password" name="ConfirmPassword" id="confirmPassword" class="form-control" />
+                    <div class="input-group-append">
+                        <span class="input-group-text" onclick="togglePassword('confirmPassword', this)">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Company Logo:</label>
+            <input type="file" name="ProfilePicture" class="form-control-file" />
+        </div>
+
+        <div class="text-center">
+            <input type="submit" value="Register" class="btn btn-primary w-25" />
+        </div>
+        <div class="text-center mt-3">
+            @* <a href="/Company/ForgotPassword">Forgot Password?</a> *@ |
+            <a href="/Company/Login">Already have an Account?SignIn</a>
+        </div>
+    }
+</div>
+
+<script>
+    var input = document.querySelector("#phone");
+    var iti = window.intlTelInput(input, {
+        initialCountry: "in",
+        separateDialCode: true,
+    });
+
+    $("form").submit(function () {
+        const dialCode = iti.getSelectedCountryData().dialCode;
+        $("#countryCode").val(dialCode);
+    });
+
+    function togglePassword(inputId, iconSpan) {
+        const input = document.getElementById(inputId);
+        const icon = iconSpan.querySelector("i");
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>

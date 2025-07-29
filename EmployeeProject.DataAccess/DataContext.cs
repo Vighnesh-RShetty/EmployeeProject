@@ -1,4 +1,5 @@
 ﻿//using EmployeeProject.DataAccess.Models;
+using EmployeeProject.DataAccess.Models;
 using EmployeeProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -14,9 +15,10 @@ namespace EmployeeProject
             optionsBuilder.UseSqlServer(sqlquery, actionProvider => actionProvider.CommandTimeout(60)).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             base.OnConfiguring(optionsBuilder);
         }
-        public DbSet<EmpTable> EmpTables { get; set; }
-
-        //public DbSet<CompanyRegisterViewModel> CompanyTable { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<EmployeeDepartment> EmployeeDepartments { get; set; }
+        public DbSet<CompanySector> CompanySectors { get; set; }
     }
 }
 

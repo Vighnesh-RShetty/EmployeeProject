@@ -1,73 +1,122 @@
-﻿@model List<EmpTable>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    @* <a href="/Employee/add-new" type="button" class="btn-success">Add Employees</a> *@
-   @* <a href="/Employee/add-new" class="btn btn-success">+</a> *@
-@* <a href="/Employee/add-new" class="btn btn-success rounded-circle" style="width: 40px; height: 40px; padding: 0; text-align: center; line-height: 40px;">+</a> *@
+﻿@model List< EmployeeProject.Data.EmployeeModel>
 
-@*<a href="/Employee/add-new" class="btn btn-success" style="width: 10%;">Add New</a>
-<a href="/Accounts/Logout"
-   class="btn btn-danger btn-sm"
-   style="width: auto;"
-   onclick="return confirm('Are you sure you want to logout?');">
-    Logout
-</a>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="~/js/validation.js"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const deleteButtons = document.querySelectorAll(".delete-btn");
+<div class="d-flex justify-content-end mb-2">
+    <!-- Add Button -->
+    <div class="me-2">
+        <button class="btn btn-sm btn-success" id="btnAddNew" title="Add Employee">Add New
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
 
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function () {
-                const employeeId = this.getAttribute("data-id");
+    <!-- CSV Download Button -->
+    <div class="me-2">
+        <a href="/Employee/DownloadCsv" class="btn btn-sm btn-info" title="Download CSV">CSV
+            <i class="fa fa-download"></i>
+        </a>
+    </div>
 
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Redirect to Delete action
-                        window.location.href = `/Employee/Delete/${employeeId}`;
-                    }
-                });
-            });
-        });
-    });
-</script>
---The New Code will Strart Form the New Line 42.
-*@
+    <!-- Back to Menu Button -->
+    <div class="me-2">
+        <a href="@Url.Action("HomePage", "Company")" class="btn btn-sm btn-secondary" title="Back to Menu">Back To Menu
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
 
-<button class="addNew" type="button" id="btnAddNew">Add New</button>
+    <!-- Logout Button -->
+    <div>
+        <a href="@Url.Action("Logout", "Company")" class="btn btn-sm btn-danger" title="Logout">Logout
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+</div>
+
+
+@* Partial View Called *@
  <div id="empDiv">
 @await Html.PartialAsync("~/Views/Employee/_Employee.cshtml",Model)
 </div>
 
 <script type="text/javascript">
-    $(function(){
-        $("#btnAddNew").on("click",showEmpDetails);
+    $(document).ready(function () {
+        $("#btnAddNew").on("click", showEmpDetails);
 
-    })
-    function showEmpDetails(){
-        window.location.href="/Employee/add-new";
+        // Wait for partial to render, then init DataTable
+        // slight delay ensures DOM is ready
+        setTimeout(function () {
+            initializeDataTable();
+        }, 100); 
+    });
+
+    function showEmpDetails() {
+        window.location.href = "/Employee/add-new";
     }
-    function confirmationEmployeeDelete(empId,Name){
-        if(confirm(`Are you sure want to delete ${Name}?`)){
-            var url=`/Employee/Delete?id=${empId}`;
-            $.post(url,null,function(partialViewHtml){
-                $("#empTable").html(partialViewHtml);
-            });
-        }
+
+    //Sweet Alert
+          function confirmDelete(empId, empName) {
+        Swal.fire({
+            title: `Are sure want to Delete ${empName}?`,
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const url = `/Employee/Delete/${empId}`;
+
+                $.post(url, null, function (partialViewHtml) {
+                    // Replace updated employee list
+                    $("#empDiv").html(partialViewHtml);
+
+                    // Re-initialize datatable if needed
+                    initializeDataTable();
+
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: `${empName} has been removed.`,
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }).fail(function () {
+                    Swal.fire('Error', 'Could not delete the employee.', 'error');
+                });
+            }
+        });
     }
-    // function editEmployeeDetails(empId){
-    //         var url=`/Employee/Edit?id=${empId}`;
-    //         $.post(url,null,function(rewsp){
-    //         $.post(url,null,function(partialViewHtml){
-    //           $("#empTable").html(partialViewHtml
-    //         });
-       // }
-        
+
+    // Ajax DataTable
+    // function initializeDataTable() {
+    //     $('#empTable').DataTable({
+    //         destroy: true, 
+    //         responsive: true,
+    //         pageLength:5,
+
+    //     });
+    // }
+
+    //New Chnaged
+        function initializeDataTable() {
+        $('#empTable').DataTable({
+        destroy: true,
+        responsive: true,
+        pageLength: 10, // default
+        lengthMenu: [ [5,10, 25, 50, -1], [5, 10, 25, 50, "All"] ], // sizes
+        language: {
+            lengthMenu: "Show _MENU_ Employees"
+        },
+        // order: [[1, 'asc']],
+        // columnDefs: [
+        //     { orderable: false, targets: [0, 6, 7] }
+        // ]
+    });
+}
 </script>

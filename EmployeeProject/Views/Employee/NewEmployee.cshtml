@@ -1,44 +1,45 @@
-﻿@model EmpTable
-@* @using(Html.BeginForm("saveemployee","Employee",FormMethod.Post)) *@
+﻿@model EmployeeProject.Data.EmployeeModel
+
 @using (Html.BeginForm("SaveEmployee", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
 
 {
-<table>
-    <tr>
-        <td>Name</td>
-        <td>@Html.TextBoxFor(m=>m.Name)</td>
-    </tr>
+    <link rel="stylesheet" href="~/css/employee-form.css" />
+    <div class="employee-form-container">
+        <h2 class="form-heading">Add New Employee</h2>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td>@Html.TextBoxFor(m => m.Name)</td>
+            </tr>
 
-    <tr>
-        <td>Age</td>
-        <td>@Html.TextBoxFor(m => m.Age)</td>
-    </tr>
-        <tr>
-            <td>Department</td>
-            <td>
-                @Html.DropDownListFor(m => m.Department, new SelectList(
-                new List<string> { "HR", "Finance", "IT", "Marketing" }
-                        ), "--Select Department--", new { @class = "form-control" })
-        </td>
-    </tr>
-    <tr>
-        <td>Email</td>
-        <td>@Html.TextBoxFor(m => m.Email)</td>
-    </tr>
+            <tr>
+                <td>Age</td>
+                <td>@Html.TextBoxFor(m => m.Age)</td>
+            </tr>
+            <tr>
+                <td>Department</td>
+                <td>
+                    @Html.DropDownListFor(m => m.DepartmentId, new SelectList(Model.EmployeeDepartments, "Value", "Text"), "-- Department Lists --", new { @class = "form-control w-100" })
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>@Html.TextBoxFor(m => m.Email)</td>
+            </tr>
 
-     <tr>
-        <td>Mobile Number</td>
-        <td>@Html.TextBoxFor(m=>m.MobileNumber)</td>
-    </tr>
-    <tr>
-        <td>Profile Picture</td>
-        <td>
-            <input type="file" name="ProfilePicture" accept="image/*" class="form-control" />
-        </td>
-    </tr>
-    <tr>
-        <td><a href="/Employee/Index">Back To Menu</a></td>
-        <td><button type="submit">Save</button></td>
-    </tr>
-</table>
+            <tr>
+                <td>Mobile Number</td>
+                <td>@Html.TextBoxFor(m => m.MobileNumber)</td>
+            </tr>
+            <tr>
+                <td>Profile Picture</td>
+                <td>
+                    <input type="file" name="ProfilePicture" accept="image/*" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td><a href="/Employee/Index">Back To Menu</a></td>
+                <td><button type="submit">Save</button></td>
+            </tr>
+        </table>
+    </div>
 }

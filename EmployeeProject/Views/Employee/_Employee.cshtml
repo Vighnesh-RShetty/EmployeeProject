@@ -1,56 +1,52 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-@if (ViewBag.msg != null)
-{
-    <div class="alert alert-success">@ViewBag.msg</div>
-}
-<table class="table" id="empTable">
-    <tr>
-        <th>Profile Picture</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Mobile Number</th>
-        <th>Actions</th>
-        <th>Actions</th>
-    </tr>
-    @{
-        foreach (var employees in Model)
+<table id="empTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Department</th>
+            <th>Actions</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model)
         {
             <tr>
                 <td>
-                    @if (!string.IsNullOrEmpty(employees.ProfilePicturePath))
+                    @if (!string.IsNullOrEmpty(emp.ProfilePicturePath))
                     {
-                        <img src="@employees.ProfilePicturePath" width="50" height="50" />
+                        <img src="@emp.ProfilePicturePath" width="50" height="50" />
                     }
                     else
                     {
+
                         <span>No Image</span>
                     }
-
                 </td>
-                <td>@employees.Name</td>
-                <td>@employees.Age</td>
-                <td>@employees.Email</td>
-                <td>@employees.MobileNumber</td>
-                @*This is Original Line of code *@
-               <td>
-                    <a href="/Employee/Edit/@employees.Id" class="btn btn-primary">Edit</a>
-                </td>
+                <td>@emp.Name</td>
+                <td>@emp.Age</td>
+                <td>@emp.Email</td>
+                <td>@emp.MobileNumber</td>
+                <td>@emp.DepartmentName</td>
 
-                 @* <td><a href="@Url.Action("Edit","Employee",new{id=@employees.Id})">Edit</a></td>*@
-
-                @* <td><a href="javascript:void(0)" onclick="editEmployeeDetails(@employees.Id)">Edit</a></td>*@
-                <td><a href="javascript:void(0)" onclick="confirmationEmployeeDelete(@employees.Id,'@employees.Name')"> Delete </a></td>
-                @*
                 <td>
-                    <a href="/Employee/Delete/@employees.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this employee?');">Delete</a>
+                    <a href="/Employee/Edit/@emp.Id" class="btn btn-sm btn-primary" title="Edit">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
-                    <button class="btn btn-danger delete-btn" data-id="@employees.Id">Delete</button>
-                </td>*@
+                    <a href="javascript:void(0)" class="btn btn-sm btn-danger" title="Delete"
+                       onclick="confirmDelete(@emp.Id, '@emp.Name')">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
 
             </tr>
         }
-    }
+    </tbody>
 </table>

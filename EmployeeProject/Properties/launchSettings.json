@@ -12,6 +12,7 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
+      "hotReloadProfile": "aspnetcore",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5171",
       "environmentVariables": {

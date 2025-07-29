@@ -1,0 +1,43 @@
+﻿/* table-style.css */
+
+.action-btn {
+    padding: 4px 8px;
+    margin: 0 2px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .action-btn:hover {
+        transform: scale(1.1);
+    }
+
+.btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: #fff;
+    }
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+/* Optional: Make Add/CSV buttons smaller and cleaner */
+#btnAddNew, .btn-csv {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+    #btnAddNew i, .btn-csv i {
+        margin-right: 5px;
+    }

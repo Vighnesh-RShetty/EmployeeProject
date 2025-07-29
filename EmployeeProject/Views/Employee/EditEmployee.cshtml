@@ -1,24 +1,84 @@
-﻿@model EmpTable
+﻿@model EmployeeProject.Data.EmployeeModel
 
-<form asp-action="UpdateEmployee" method="post">
-    @* @Html.AntiForgeryToken() *@
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label>Name</label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Age</label>
-        <input asp-for="Age" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Email</label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Mobile Number</label>
-        <input asp-for="MobileNumber" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-success">Update</button>
-    <td><a href="/Employee/Index">Back To Menu</a></td>
-</form>
+<link href="~/css/edit-employee.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" rel="stylesheet" />
+<script src="~/js/validation.js"></script>
+
+<div class="back-button-container">
+    <a href="/Employee/Index" class="btn btn-secondary">Back To Menu</a>
+</div>
+
+<div class="edit-employee-container">
+    <h2 class="form-title">Edit Employee Details</h2>
+
+    @using (Html.BeginForm("UpdateEmployee", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="form-group">
+            <label>Name</label>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label>Department</label>
+            @Html.DropDownListFor(m => m.DepartmentId, new SelectList(Model.EmployeeDepartments, "Value", "Text", Model.DepartmentId), "-- Select Department --", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label>Mobile Number</label>
+            @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label>Profile Picture</label>
+            <input type="file" name="ProfilePicture" accept="image/*" class="form-control" />
+
+            @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+            {
+                <img src="@Url.Content(Model.ProfilePicturePath)" width="100" height="100" />
+            }
+        </div>
+
+        <button type="submit" class="btn btn-success">Update</button>
+    }
+</div>
+
+<script>
+    var input = document.querySelector("#phone");
+    var iti = window.intlTelInput(input, {
+        initialCountry: "in",
+        separateDialCode: true,
+    });
+
+    $("form").submit(function () {
+        const dialCode = iti.getSelectedCountryData().dialCode;
+        $("#countryCode").val(dialCode);
+    });
+
+    function togglePassword(inputId, iconSpan) {
+        const input = document.getElementById(inputId);
+        const icon = iconSpan.querySelector("i");
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>

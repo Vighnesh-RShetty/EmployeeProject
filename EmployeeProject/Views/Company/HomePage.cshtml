@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+<div class="container text-center mt-5">
+    <h2 class="mb-5">Welcome! What would you like to do?</h2>
+
+    <div class="row justify-content-center">
+        <!-- Dashboard Icon -->
+        <div class="col-md-4">
+            <a href="@Url.Action("Dashboard", "Company")" class="text-decoration-none text-dark">
+                <div class="card shadow-lg p-4 hover-effect">
+                    <i class="fas fa-chart-line fa-4x mb-3 text-primary"></i>
+                    <h4>Go to Dashboard</h4>
+                </div>
+            </a>
+        </div>
+
+        <!-- Employee List Icon -->
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Employee")" class="text-decoration-none text-dark">
+                <div class="card shadow-lg p-4 hover-effect">
+                    <i class="fas fa-users fa-4x mb-3 text-success"></i>
+                    <h4>View Employee List</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-effect:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease-in-out;
+        background-color: #f0f8ff;
+    }
+
+</style>

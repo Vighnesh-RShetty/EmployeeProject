@@ -1,0 +1,99 @@
+﻿@model EmployeeProject.Data.CompanyModel
+@{
+    ViewData["Title"] = "Company Dashboard";
+}
+<!-- Font Awesome & Bootstrap -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+<style>
+    .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+
+        .top-nav a {
+            color: #333;
+            transition: 0.2s;
+        }
+
+            .top-nav a:hover {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+    .dashboard-card {
+        border-radius: 20px;
+        padding: 30px;
+        background-color: #fdfdfd;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .company-logo {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #007bff;
+    }
+
+    .company-info h3 {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .company-info .info-item {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .company-info .badge {
+        font-size: 0.95rem;
+        padding: 0.5em 0.75em;
+    }
+</style>
+
+<div class="container mt-4">
+    <!-- Top Bar -->
+    <div class="top-nav mb-3">
+        <a href="@Url.Action("HomePage", "Company")" title="Back to Menu">
+            <i class="fas fa-arrow-left"></i> Menu
+        </a>
+        <a href="@Url.Action("Logout", "Company")" title="Logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+    <!-- Dashboard Card -->
+    <div class="dashboard-card d-flex align-items-center">
+        <!-- Logo Section -->
+        <div class="me-4">
+            <img src="@Model.CompanyLogoPath" alt="Company Logo" class="company-logo" />
+        </div>
+
+        <!-- Company Info Section -->
+        <div class="company-info">
+            <div class="info-item">
+
+                <h3>@Model.CompanyName</h3>
+            </div>
+            <div class="info-item">
+                <strong>Email:</strong> <span class="badge badge-info">@Model.Email</span>
+            </div>
+            <div class="info-item">
+                <strong>Sector:</strong> <span class="badge badge-secondary">@Model.SectorName</span>
+            </div>
+            <div class="info-item">
+                <strong>Contact Number</strong> <span class="badge badge-secondary">@Model.ContactNumber</span>
+            </div>
+            <div class="info-item">
+                <strong>Sector:</strong> <span class="badge badge-secondary">@Model.CompanySector</span>
+            </div>
+            <div class="info-item">
+                <strong>Sector:</strong> <span class="badge badge-secondary">@Model.CompanySector</span>
+            </div>
+        </div>
+    </div>
+</div>

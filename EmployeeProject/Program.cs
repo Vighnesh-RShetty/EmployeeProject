@@ -1,18 +1,17 @@
+using EmployeeProject;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 var app = builder.Build();
 
-//builder.Services.AddSession();
-//app.UseSession();
-
-
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -28,22 +27,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-//builder.Services.AddSession(Options=>Options.IdleTimeout=TimeSpan.FromMinutes(30);
-//Options.Cookie.HttpOnly = true;
-//Options.Cookie.IsEssential = true;
-//);
-
-
-//builder.Services.AddSession(options =>
-//{
-//    options.IdleTimeout = TimeSpan.FromMinutes(30);
-//    options.Cookie.HttpOnly = true;
-//    options.Cookie.IsEssential = true;
-//});
 
 app.MapControllerRoute(
     name: "default",
     //pattern: "{controller=Employee}/{action=Index}/{id?}");
-    pattern: "{controller=Accounts}/{action=Login}/{id?}");
-
+    //pattern: "{controller=Accounts}/{action=Login}/{id?}");
+    pattern: "{controller=Company}/{action=Login}/{id?}");
 app.Run();
