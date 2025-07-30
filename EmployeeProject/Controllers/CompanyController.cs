@@ -13,9 +13,7 @@ namespace EmployeeProject.Controllers
 {
     public class CompanyController : Controller
     {
-
         private readonly CompanyManagement _companyLogic;
-
         public CompanyController(IMapper mapper)
         {
             _companyLogic = new CompanyManagement(mapper);
@@ -74,7 +72,7 @@ namespace EmployeeProject.Controllers
         public IActionResult ValidateLogin(CompanyModel model)
         {
             Company company = _companyLogic.ValidatePlainLogin(model.Email, model.Password);
-
+           
             if (company != null)
             {
                 HttpContext.Session.SetInt32("companyId", company.CompanyId);
@@ -82,7 +80,7 @@ namespace EmployeeProject.Controllers
                 return RedirectToAction("HomePage", "Company");
             }
             ViewBag.ErrorMessage = "Invalid email or password";
-            return View("~/Views/Accounts/Login.cshtml", model);
+            return View("~/Views/Accounts/Login.cshtml", company);
         }
         public IActionResult HomePage()
         {
@@ -101,7 +99,6 @@ namespace EmployeeProject.Controllers
             {
                 RedirectToAction("Login");
             }
-
             var company = _companyLogic.GetCompany((int)companyId);
             if (company == null)
 

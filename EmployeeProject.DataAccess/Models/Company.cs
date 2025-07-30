@@ -25,7 +25,8 @@ namespace EmployeeProject.DataAccess.Models
             [NotMapped]
             public string? ConfirmPassword { get; set; }
            public string? CompanyLogoPath { get; set; }
-
+          // Adding new thing
+           public string? ResetToken { get; set; }
 
            [ForeignKey("CompanySector")]
            public int SectorId { get; set; }

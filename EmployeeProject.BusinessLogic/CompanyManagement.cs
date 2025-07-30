@@ -1,20 +1,9 @@
 ﻿using AutoMapper;
 using EmployeeProject.Data;
 using EmployeeProject.DataAccess.Models;
-using EmployeeProject.Models;
 using EmployeeProject.Repository;
 using EmployeeProject.Repository.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
 using static EmployeeProject.Data.CompanyModel;
-using static EmployeeProject.Data.EmployeeModel;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace EmployeeProject.BusinessLogic
 {
@@ -79,6 +68,35 @@ namespace EmployeeProject.BusinessLogic
                       };
             return sql.ToList();
         }
+        //This is for the generate the reset password
 
+        public string GenerateResetToken(string email)
+        {
+            Company model = _companyRepository.GetByEmail(email);
+            if (model == null)
+            {
+                return null;
+            }
+            else
+            {
+                //Generates any random strings
+                string token = Guid.NewGuid().ToString();
+                _companyRepository.updateResetToken(email, token);
+                return token;
+            }
+        }
+        public bool ResetPassword(string token, string newPassword)
+        {
+            var company = _companyRepository.GetCompanyByResetToken(token);
+            if (company == null)
+            {
+                return false;
+            }
+            else
+            {
+                _companyRepository.updatePasswordByToken(token, newPassword);
+                return true;
+            }
+        }
     }
 }

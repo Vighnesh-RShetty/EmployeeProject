@@ -16,6 +16,6 @@ namespace EmployeeProject.Repository.Interfaces
         void Save();
         IEnumerable<Employee> GetEmployees(int companyId);
         Employee? GetEmployee(int id);
-        IEnumerable<EmployeeDepartment> GetEmployeeDepartments();
+        IEnumerable<EmployeeDepartment> GetEmployeeDepartments();   
     }
 }

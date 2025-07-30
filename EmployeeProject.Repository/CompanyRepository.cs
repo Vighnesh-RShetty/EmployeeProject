@@ -1,4 +1,5 @@
-﻿using EmployeeProject.DataAccess.Models;
+﻿using EmployeeProject.Data;
+using EmployeeProject.DataAccess.Models;
 using EmployeeProject.Repository.Interfaces;
 using Microsoft.Data.Sql;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,28 @@ namespace EmployeeProject.Repository
             return _dataContext.Companies
                 .Include(c => c.CompanySector)
                 .Single(c => c.CompanyId == compnayId);
+        }
+
+        public void updateResetToken(string email, string token)
+        {
+            Company company = GetByEmail(email);
+            if (company != null)
+            {
+                company.ResetToken = token;
+                _dataContext.SaveChanges();
+            }
+        }
+        public Company GetCompanyByResetToken(string token)
+        {
+            return _dataContext.Companies.FirstOrDefault(c=>c.ResetToken==token);
+        }
+
+        public void updatePasswordByToken(string token, string newPassword)
+        {
+            Company model= GetCompanyByResetToken(token);
+            model.Password = newPassword;
+            model.ResetToken = null;
+            _dataContext.SaveChanges();
         }
     }
 }
